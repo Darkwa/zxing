@@ -3,6 +3,7 @@ package patchTTest;
 import com.google.zxing.*;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.GlobalHistogramBinarizer;
+import com.google.zxing.oned.PatchCodeReader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -16,7 +17,8 @@ public class testPatchT {
 
     Reader reader = new PatchCodeReader();
 
-    File file = new File("/home/pierre/Documents/Patch_T_US-Letter.tif");
+//    File file = new File("/home/pierre/Documents/Patch_T_US-Letter.tif");
+    File file = new File("D:\\Users\\pduros\\Downloads\\patch-code-t.png");
     BufferedImage image = null;
     Result result = null;
     try {
