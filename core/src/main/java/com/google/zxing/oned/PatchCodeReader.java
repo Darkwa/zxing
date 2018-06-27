@@ -23,6 +23,8 @@ public class PatchCodeReader extends OneDReader {
     0b10001 // PATCH-T
   };
 
+  private static final String patchT = "PATCH_T";
+
   // Keep some instance variables to avoid reallocations
   private final StringBuilder decodeRowResult;
   private int[] counters;
@@ -42,6 +44,8 @@ public class PatchCodeReader extends OneDReader {
 
     int nextStart = 1;
 
+    boolean matchingPatternFound = false;
+
     while(nextStart < counterLength) {
       int charOffset = toNarrowWidePattern(nextStart);
       if(charOffset != -1) {
@@ -53,6 +57,7 @@ public class PatchCodeReader extends OneDReader {
         }
         if (nextStart == 1 || counters[nextStart - 1] >= patternSize / 2) {
           // We found a matching pattern
+          matchingPatternFound = true;
           break;
         }
       }
@@ -60,6 +65,9 @@ public class PatchCodeReader extends OneDReader {
       nextStart += 2;
     }
 
+    if(!matchingPatternFound) {
+      throw NotFoundException.getNotFoundInstance();
+    }
     // Look for whitespace after pattern:
     // Ici on mesure la taille effective du dernier charactère (somme des counters(n)
     int trailingWhitespace = counters[nextStart + 7];
@@ -85,7 +93,7 @@ public class PatchCodeReader extends OneDReader {
     }
     float right = runningCount;
     return new Result(
-      decodeRowResult.toString(),
+      patchT,
       null,
       new ResultPoint[]{
         new ResultPoint(left, rowNumber),
